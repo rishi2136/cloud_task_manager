@@ -1,23 +1,35 @@
 import Notice from "../models/notification.js";
 import Task from "../models/task.js";
 import User from "../models/user.js";
+import { uploadToCloudinary } from "../utils/uploadToCloudinary.js";
 
 export const createTask = async (req, res) => {
   try {
     const { userId } = req.user;
+    const { title, team, stage, date, priority } = req.body;
 
-    const { title, team, stage, date, priority, assets } = req.body;
+    let assets = [];
 
-    let text = "New task has been assigned to you";
-    if (team?.length > 1) {
-      text = text + ` and ${team?.length - 1} others.`;
+    // Handle file uploads if any
+    if (req.files && req.files.length > 0) {
+      const uploadPromises = req.files.map((file) =>
+        uploadToCloudinary(file.path)
+      );
+      const uploadedAssets = await Promise.all(uploadPromises);
+      assets = uploadedAssets.map((file) => ({
+        url: file.url,
+        publicId: file.public_id,
+      }));
     }
 
-    text =
-      text +
-      ` The task priority is set a ${priority} priority, so check and act accordingly. The task date is ${new Date(
-        date
-      ).toDateString()}. Thank you!!!`;
+    // Notification message
+    let text = "New task has been assigned to you";
+    if (team?.length > 1) {
+      text += ` and ${team?.length - 1} others.`;
+    }
+    text += ` The task priority is set as ${priority} priority. The task date is ${new Date(
+      date
+    ).toDateString()}.`;
 
     const activity = {
       type: "assigned",
@@ -45,7 +57,7 @@ export const createTask = async (req, res) => {
       .status(200)
       .json({ status: true, task, message: "Task created successfully." });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(400).json({ status: false, message: error.message });
   }
 };
@@ -147,7 +159,7 @@ export const dashboardStatistics = async (req, res) => {
           .sort({ _id: -1 });
 
     const users = await User.find({ isActive: true })
-      .select("name title role isAdmin createdAt")
+      .select("name title role isAdmin createdAt isActive")
       .limit(10)
       .sort({ _id: -1 });
 
@@ -199,15 +211,20 @@ export const dashboardStatistics = async (req, res) => {
 
 export const getTasks = async (req, res) => {
   try {
-    const { stage, isTrashed } = req.query;
-
+    const { stage, isTrashed, searchQuery } = req.query;
     let query = { isTrashed: isTrashed ? true : false };
 
     if (stage) {
       query.stage = stage;
     }
+    if (searchQuery) {
+      query.title = { $regex: searchQuery, $options: "i" };
+    }
 
-    let queryResult = Task.find(query)
+    let queryResult = Task.find({
+      ...query,
+      ...(req.user.isAdmin ? {} : { team: { $in: [req.user.userId] } }),
+    })
       .populate({
         path: "team",
         select: "name title email",
@@ -280,24 +297,52 @@ export const createSubTask = async (req, res) => {
 export const updateTask = async (req, res) => {
   try {
     const { id } = req.params;
-    const { title, date, team, stage, priority, assets } = req.body;
+    const { title, date, team, stage, priority } = req.body;
 
     const task = await Task.findById(id);
+    if (!task) {
+      return res.status(404).json({ status: false, message: "Task not found" });
+    }
 
-    task.title = title;
-    task.date = date;
-    task.priority = priority.toLowerCase();
-    task.assets = assets;
-    task.stage = stage.toLowerCase();
-    task.team = team;
+    let newAssets = [];
+
+    // Upload new files if available
+    if (req.files && req.files.length > 0) {
+      const uploadPromises = req.files.map((file) =>
+        uploadToCloudinary(file.path)
+      );
+      const uploadedFiles = await Promise.all(uploadPromises);
+      newAssets = uploadedFiles.map((file) => ({
+        url: file.url,
+        publicId: file.public_id,
+      }));
+    }
+
+    // req.body.team.map(([a, b]) => console.log(a, b));
+    console.log("Before update", req.body);
+
+    // Update task fields
+    task.title = title || task.title;
+    task.date = date || task.date;
+    task.priority = priority?.toLowerCase() || task.priority;
+    task.stage = stage?.toLowerCase() || task.stage;
+    task.team = team || task.team;
+
+    // Append new assets
+    if (newAssets.length > 0) {
+      task.assets.push(...newAssets);
+    }
 
     await task.save();
+    console.log("Update task", task);
 
-    res
-      .status(200)
-      .json({ status: true, message: "Task duplicated successfully." });
+    res.status(200).json({
+      status: true,
+      message: "Task updated successfully.",
+      task,
+    });
   } catch (error) {
-    console.log(error);
+    console.error("Update Task Error:", error);
     return res.status(400).json({ status: false, message: error.message });
   }
 };
@@ -335,7 +380,7 @@ export const deleteRestoreTask = async (req, res) => {
       const resp = await Task.findById(id);
 
       resp.isTrashed = false;
-      resp.save();
+      await resp.save();
     } else if (actionType === "restoreAll") {
       await Task.updateMany(
         { isTrashed: true },

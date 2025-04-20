@@ -6,6 +6,7 @@ import Notice from "../models/notification.js";
 export const registerUser = async (req, res) => {
   try {
     const { name, email, password, isAdmin, role, title } = req.body;
+    console.log({ name, email, password, isAdmin, role, title });
 
     const userExist = await User.findOne({ email });
 
@@ -20,7 +21,7 @@ export const registerUser = async (req, res) => {
       name,
       email,
       password,
-      isAdmin,
+      isAdmin: isAdmin ? isAdmin === "true" : isAdmin,
       role,
       title,
     });
@@ -36,6 +37,7 @@ export const registerUser = async (req, res) => {
         .status(400)
         .json({ status: false, message: "Invalid user data" });
     }
+    // res.json({ msg: "we got the response" });
   } catch (error) {
     console.log(error);
     return res.status(400).json({ status: false, message: error.message });
@@ -67,7 +69,6 @@ export const loginUser = async (req, res) => {
       createJWT(res, user._id);
 
       user.password = undefined;
-
       res.status(200).json(user);
     } else {
       return res
@@ -94,9 +95,27 @@ export const logoutUser = async (req, res) => {
   }
 };
 
+// export const verifyCookie = async (req, res) => {
+//   try {
+//     let token = req.cookies?.token;
+//     let user;
+//     if (token) {
+//       const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+
+//       user = await User.findById(decodedToken.userId);
+//     }
+//     res.json(user);
+//   } catch (err) {
+//     console.log(err);
+//     res.error(err.message);
+//   }
+// };
+
 export const getTeamList = async (req, res) => {
   try {
-    const users = await User.find().select("name title role email isActive");
+    const users = await User.find().select(
+      "name title role email isActive isAdmin"
+    );
 
     res.status(200).json(users);
   } catch (error) {
@@ -141,8 +160,9 @@ export const updateUserProfile = async (req, res) => {
       user.role = req.body.role || user.role;
 
       const updatedUser = await user.save();
-
-      user.password = undefined;
+      console.log(updatedUser);
+      // user.password = undefined;
+      updatedUser.password = undefined;
 
       res.status(201).json({
         status: true,

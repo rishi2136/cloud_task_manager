@@ -41,7 +41,12 @@ const taskSchema = new Schema(
         tag: String,
       },
     ],
-    assets: [String],
+    assets: [
+      {
+        url: String,
+        publicId: String,
+      },
+    ],
     team: [{ type: Schema.Types.ObjectId, ref: "User" }],
     isTrashed: { type: Boolean, default: false },
   },

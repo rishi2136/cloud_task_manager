@@ -18,7 +18,9 @@ const router = express.Router();
 router.post("/register", registerUser);
 router.post("/login", loginUser);
 router.post("/logout", logoutUser);
+// router.get("/verify", verifyCookie);
 
+// router.get("/get-team", protectRoute, isAdminRoute, getTeamList);
 router.get("/get-team", protectRoute, isAdminRoute, getTeamList);
 router.get("/notifications", protectRoute, getNotificationsList);
 
