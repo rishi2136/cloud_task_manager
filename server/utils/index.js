@@ -18,7 +18,6 @@ export const createJWT = (res, userId) => {
   // Change sameSite from strict to none when you deploy your app
   // res.cookie("token", token, {
   //   httpOnly: true,
-  //   secure: process.env.NODE_ENV !== "development",
   //   // secure: false,
   //   sameSite: "lax", // "none" for cross-site requests but requires HTTPS
   //   maxAge: 1 * 24 * 60 * 60 * 1000, //1 day
@@ -26,10 +25,8 @@ export const createJWT = (res, userId) => {
   // });
 
   res.cookie("token", token, {
-    //return true
-    httpOnly: process.env.NODE_ENV !== "development", // Prevents JS access to cookie (security)
-    //return true
-    secure: process.env.NODE_ENV !== "development", // Send only over HTTPS in production
+    httpOnly: true, // Prevents JS access to cookie (security)
+    secure: true, // Send only over HTTPS in production
     sameSite: "none", // Needed for cross-site (frontend/backend on different domains)
     maxAge: 24 * 60 * 60 * 1000, // 1 day (in milliseconds)
   });
