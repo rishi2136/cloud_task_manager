@@ -20,13 +20,12 @@ dbConnection();
 const PORT = process.env.PORT || 5000;
 
 const corsConfig = {
-  // origin: [
-  //   "http://localhost:3000",
-  //   "http://localhost:3011",
-  //   "https://cloud-task-manager-frontend.vercel.app",
-  //   "https://cloud-task-manager-backend-y3hm.onrender.com"
-  // ],
-  origin: "*",
+  origin: [
+    "http://localhost:3000",
+    "http://localhost:3011",
+    "https://cloud-task-manager-frontend.vercel.app",
+    "https://cloud-task-manager-backend-y3hm.onrender.com",
+  ],
   methods: ["GET", "POST", "PATCH", "PUT", "DELETE"],
   credentials: true,
 };
@@ -40,7 +39,6 @@ const socketIO = new Server(server, {
 });
 
 app.use(express.json());
-// app.use(express.urlencoded({ extended: true }));
 
 app.use(bodyParser.urlencoded({ extended: false }));
 

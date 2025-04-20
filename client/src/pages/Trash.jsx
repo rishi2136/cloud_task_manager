@@ -37,6 +37,7 @@ const Trash = () => {
     strQuery: "",
     isTrashed: "true",
     search: "",
+    searchQuery: "",
   });
 
   const [deleteRestore] = useDeleteRestoreTaskMutation();
@@ -80,7 +81,8 @@ const Trash = () => {
 
       setTimeout(() => {
         setOpenDialog(false);
-        window.location.reload();
+        // window.location.reload();
+        refetch();
       }, 500);
     } catch (err) {
       console.log(err);
