@@ -18,8 +18,8 @@ export const createJWT = (res, userId) => {
   // Change sameSite from strict to none when you deploy your app
   res.cookie("token", token, {
     httpOnly: true,
-    // secure: process.env.NODE_ENV !== "development",
-    secure: false,
+    secure: process.env.NODE_ENV !== "development",
+    // secure: false,
     sameSite: "lax", // "none" for cross-site requests but requires HTTPS
     maxAge: 1 * 24 * 60 * 60 * 1000, //1 day
     // maxAge: 30 * 1000, //1 day
