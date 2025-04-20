@@ -43,6 +43,10 @@ app.use(morgan("dev"));
 
 socketHandler(socketIO);
 
+app.get("/", (req, res) => {
+  res.send(`<h1>Hi Developer, Your website is running at ${PORT} port</h1>`);
+});
+
 app.use("/api", routes);
 
 app.use(routeNotFound);
