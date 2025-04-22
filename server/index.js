@@ -25,6 +25,7 @@ const corsConfig = {
     "http://localhost:3011",
     "https://cloud-task-manager-frontend.vercel.app",
     "https://cloud-task-manager-backend-y3hm.onrender.com",
+    "https://wisehandle.onrender.com",
   ],
   methods: ["GET", "POST", "PATCH", "PUT", "DELETE"],
   credentials: true,
