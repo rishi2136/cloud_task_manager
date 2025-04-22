@@ -27,7 +27,7 @@ export const createJWT = (res, userId) => {
   res.cookie("token", token, {
     httpOnly: true, // Prevents JS access to cookie (security)
     secure: true, // Send only over HTTPS in production
-    sameSite: "lax", // Needed for cross-site (frontend/backend on different domains)
+    sameSite: "None", // Needed for cross-site (frontend/backend on different domains)
     maxAge: 24 * 60 * 60 * 1000, // 1 day (in milliseconds)
   });
 };
