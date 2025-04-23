@@ -5,9 +5,26 @@ export const dbConnection = async () => {
   try {
     await mongoose.connect(process.env.MONGODB_URI);
 
-    console.log("DB connection established");
+    console.log("✅ Database connected");
+
+    const db = mongoose.connection;
+
+    db.on("error", (err) => {
+      console.error("❌ Mongoose connection error:", err.message);
+    });
+
+    db.on("disconnected", () => {
+      console.warn("⚠️ Mongoose disconnected");
+    });
+
+    process.on("SIGINT", async () => {
+      await db.close();
+      console.log("🔌 Mongoose connection closed due to app termination");
+      process.exit(0);
+    });
   } catch (error) {
-    console.log("DB Error: " + error);
+    console.error("❌ Initial DB connection failed:", error.message || error);
+    process.exit(1);
   }
 };
 
@@ -24,7 +41,7 @@ export const createJWT = (res, userId) => {
   //   // maxAge: 30 * 1000, //1 day
   // });
 
-  //For the Production Level Config
+  // For the Production Level Config
   res.cookie("token", token, {
     httpOnly: true,
     secure: process.env.NODE_ENV !== "development",

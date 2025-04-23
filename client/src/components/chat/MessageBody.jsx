@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { socket } from "../../utils/socketIO";
 import { GrClearOption } from "react-icons/gr";
 import { useSelector } from "react-redux";
+import { toast } from "sonner";
 
 const MessageBody = () => {
   // const [msgQueue, setMsgQueue] = useState([
@@ -31,16 +32,27 @@ const MessageBody = () => {
   // const currUser = JSON.parse(localStorage.getItem("userInfo"));
 
   useEffect(() => {
-    // Initial load
+    const requestHistory = () => {
+      socket.emit("get_chat_history");
+    };
+
+    socket.on("connect", requestHistory); // For first connection and reconnections
+    requestHistory(); // Immediate request
+
     socket.on("chat_history", (history) => {
-      setMessages(history);
+      setMessages(history || []); // defensive
     });
 
     socket.on("receive_message", (msg) => {
       setMessages((prev) => [...prev, msg]);
     });
 
+    socket.on("error_message", (err) => {
+      toast.error(err.message); // Or show toast/snackbar
+    });
+
     return () => {
+      socket.off("connect", requestHistory);
       socket.off("chat_history");
       socket.off("receive_message");
     };
@@ -65,6 +77,7 @@ const MessageBody = () => {
       </div>
     );
   }
+  console.log(messages);
 
   return (
     <div className="w-full bg-white  overflow-hidden flex flex-col border border-gray-200">
@@ -74,7 +87,7 @@ const MessageBody = () => {
         {messages.length === 0 ? (
           <p className="text-center text-gray-400 py-10">No messages yet.</p>
         ) : (
-          messages?.map(({ content, sender }, idx) => {
+          messages.map(({ content, sender }, idx) => {
             const isCurrentUser = currUser.name === sender.name;
 
             return (

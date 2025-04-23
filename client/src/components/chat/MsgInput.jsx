@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { socket } from "../../utils/socketIO";
+import { toast } from "sonner";
 
 export default function MsgInput() {
   const [msg, setMsg] = useState("");
@@ -9,6 +10,10 @@ export default function MsgInput() {
     e.preventDefault();
     if (msg.trim() && localStorage.getItem("userInfo")) {
       const { _id } = JSON.parse(localStorage.getItem("userInfo"));
+      if (!_id) {
+        toast.error("User not identified");
+        return;
+      }
       socket.emit("send_message", {
         content: msg,
         sender: _id,
