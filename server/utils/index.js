@@ -24,10 +24,11 @@ export const createJWT = (res, userId) => {
   //   // maxAge: 30 * 1000, //1 day
   // });
 
+  //For the Production Level Config
   res.cookie("token", token, {
-    httpOnly: true, // Prevents JS access to cookie (security)
-    secure: true, // Send only over HTTPS in production
-    sameSite: "lax", // Needed for cross-site (frontend/backend on different domains)
-    maxAge: 24 * 60 * 60 * 1000, // 1 day (in milliseconds)
+    httpOnly: true,
+    secure: process.env.NODE_ENV !== "development",
+    sameSite: process.env.NODE_ENV === "development" ? "lax" : "none",
+    maxAge: 1 * 24 * 60 * 60 * 1000, // 1 day
   });
 };
