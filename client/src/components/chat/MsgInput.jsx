@@ -24,7 +24,7 @@ export default function MsgInput() {
   };
 
   return (
-    <div className="p-3 border-t bg-white absolute bottom-0 right-0 z-10 w-full">
+    <div className="p-3 border-t bg-white sticky bottom-0 right-0 z-10 w-full">
       <form onSubmit={handleSend} className="flex items-center gap-2 ">
         <input
           type="text"
