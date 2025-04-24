@@ -1,8 +1,24 @@
 # Fullstack Task Manager (MERN)
 
-# Overview
+The Cloud-Based Task Manager is a web application designed to streamline team task management. Built using the MERN stack (MongoDB, Express.js, React, and Node.js), this platform provides a user-friendly interface for efficient task assignment, tracking, and collaboration. The application caters to administrators and regular users, offering comprehensive features to enhance productivity and organization. And also have elastic search for searching particular task negalecting its case, and For the real-time communication and collaboration we also have the Chat Panel powered by SocketIO.
 
-The Cloud-Based Task Manager is a web application designed to streamline team task management. Built using the MERN stack (MongoDB, Express.js, React, and Node.js), this platform provides a user-friendly interface for efficient task assignment, tracking, and collaboration. The application caters to administrators and regular users, offering comprehensive features to enhance productivity and organization. And have chat panel for real time communication and elastic search bar to search the task.
+## Supporting Screenshots
+
+### Analytic Dashboard
+
+![Cloud-Based-Task-Manager_Analytics](https://github.com/user-attachments/assets/2020dc01-d810-4fbf-a9d7-73a3e073bf31)
+
+### User Access Management Section
+
+![access_control](https://github.com/user-attachments/assets/125edd3d-16ca-47a7-94b3-5d93ad37d20a)
+
+### Elastic Search and Chat Panel using socket.IO
+
+![search](https://github.com/user-attachments/assets/40e659ba-b8e0-49e4-b0e4-d095f327109a)
+
+### Backup and Restore
+
+![backup_restore](https://github.com/user-attachments/assets/c90c12a3-8d9e-4a94-84f8-d5c1a9951d2f)
 
 ### Why/Problem?
 
@@ -35,6 +51,7 @@ With the rise of remote work and dispersed teams, there is a growing need for to
 4. **Asset Management:**
 
    - Upload task assets, such as images.
+   - Cloudinary is used to store assets.
 
 5. **User Account Control:**
    - Disable or activate user accounts.
@@ -68,6 +85,10 @@ With the rise of remote work and dispersed teams, there is a growing need for to
 4. **Dashboard:**
    - Provide a summary of user activities.
    - Filter tasks into todo, in progress, or completed.
+5. **Chat Panel:**
+   - Real-time collaboration and communication with colleagues.
+   - Clean and Intractive Interface for good user experineces.
+   - Clear chat actio button to clear the chat(admin only).
 
 ## **Technologies Used:**
 
@@ -99,6 +120,7 @@ First, create the environment variables file `.env` in the server folder. The `.
 - JWT_SECRET = `any secret key - must be secured`
 - PORT = `8800` or any port number
 - NODE_ENV = `development`
+  and Cloudinary ENV variable as well.
 
 &nbsp;
 
