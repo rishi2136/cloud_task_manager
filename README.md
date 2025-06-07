@@ -165,7 +165,6 @@ If configured correctly, you should see a message indicating that the server is 
 First, create the environment variables file `.env` in the client folder. The `.env` file contains the following environment variables:
 
 - VITE_APP_BASE_URL = `http://localhost:8800` #Note: Change the port 8800 to your port number.
-- VITE_APP_FIREBASE_API_KEY = `Firebase api key`
 
 ## Steps to run client
 
@@ -178,5 +177,12 @@ First, create the environment variables file `.env` in the client folder. The `.
 
 ## For Support, Contact:
 
-- Email: codewavewithasante@gmail.com
-- Telegram Chat: [https://t.me/Codewave_with_asante](https://t.me/Codewave_with_asante)
+### Contact with team lead
+
+- Name: Rishi
+- Email: rishiagrahari36@gmail.com
+- LinkedIn: https://www.linkedin.com/in/rishi-agrahari-0b1965274/
+
+### Collaborator Involves
+
+Radhika Yadav, Namrata Shrama, Aman Usmani and Anshika Yadav

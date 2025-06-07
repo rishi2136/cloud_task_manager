@@ -85,7 +85,8 @@ const Users = () => {
         <th className="py-2">Email</th>
         <th className="py-2">Role</th>
         <th className="py-2">Active</th>
-        <th className="py-2">Role</th>
+        <th className="py-2">Access Level</th>
+        <th className="py-2">Actions</th>
       </tr>
     </thead>
   );

@@ -65,7 +65,7 @@ const MessageBody = () => {
 
   function ChatHeader() {
     return (
-      <div className="p-4 border-b mb-1 flex justify-between align-baseline">
+      <div className="p-4 border-b mb-1 flex justify-between align-baseline sticky top">
         <h2 className="text-xl font-semibold text-gray-800">Chats</h2>
         {currUser?.isAdmin && (
           <GrClearOption

@@ -8,7 +8,7 @@ import {
 } from "react-icons/md";
 import { FaTasks, FaTrashAlt, FaUsers } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { setOpenSidebar } from "../redux/slices/authSlice";
 import clsx from "clsx";
 
@@ -55,6 +55,9 @@ const Sidebar = () => {
 
   const dispatch = useDispatch();
   const location = useLocation();
+  const dashboradRedirect = () => {
+    location.redirect("/dashboard");
+  };
 
   const path = location.pathname.split("/")[1];
 
@@ -81,7 +84,10 @@ const Sidebar = () => {
   };
   return (
     <div className="w-full  h-full flex flex-col gap-6 p-5">
-      <h1 className="flex gap-1 items-center">
+      <h1
+        className="flex gap-1 items-center cursor-pointer"
+        onClick={dashboradRedirect}
+      >
         <p className="bg-blue-600 p-2 rounded-full">
           <MdOutlineAddTask className="text-white text-2xl font-black" />
         </p>

@@ -1,14 +1,10 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React from "react";
 import { MdOutlineSearch } from "react-icons/md";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setOpenSidebar } from "../redux/slices/authSlice";
 import UserAvatar from "./UserAvatar";
 import NotificationPanel from "./NotificationPanel";
-import { BsChatDots } from "react-icons/bs";
 import { MdOutlineChat } from "react-icons/md";
-import { useSearchTaskQuery } from "../redux/slices/api/taskApiSlice";
-import { useDebounce } from "../hooks/debounce";
-import { useNavigate } from "react-router-dom";
 
 const Navbar = ({ setIsHidden, setQuery, query }) => {
   const dispatch = useDispatch();
