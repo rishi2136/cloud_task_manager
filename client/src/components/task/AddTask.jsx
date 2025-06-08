@@ -336,6 +336,8 @@ const AddTask = ({ open, setOpen, task }) => {
     formState: { errors },
   } = useForm({ defaultValues });
 
+  // console.log(task.team);
+
   const [team, setTeam] = useState(task?.team || []);
   const [stage, setStage] = useState(task?.stage?.toUpperCase() || LISTS[0]);
   const [priority, setPriority] = useState(

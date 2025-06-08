@@ -77,7 +77,6 @@ const MessageBody = () => {
       </div>
     );
   }
-  console.log(messages);
 
   return (
     <div className="w-full bg-white  overflow-hidden flex flex-col border border-gray-200">

@@ -11,6 +11,9 @@ const UserList = ({ setTeam, team }) => {
   const { data, isLoading } = useGetTeamListQuery();
   const [selectedUsers, setSelectedUsers] = useState([]);
 
+  // console.log(data);
+  // console.log(selectedUsers);
+
   useEffect(() => {
     if (team?.length < 1) {
       data && setSelectedUsers([data[0]]);

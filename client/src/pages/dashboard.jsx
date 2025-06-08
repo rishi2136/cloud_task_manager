@@ -171,21 +171,21 @@ const Dashboard = () => {
     {
       _id: "2",
       label: "COMPLTED TASK",
-      total: totals["completed"] || 0,
+      total: data?.tasks["completed"] || 0,
       icon: <MdAdminPanelSettings />,
       bg: "bg-[#0f766e]",
     },
     {
       _id: "3",
       label: "TASK IN PROGRESS ",
-      total: totals["in progress"] || 0,
+      total: data?.tasks["in progress"] || 0,
       icon: <LuClipboardEdit />,
       bg: "bg-[#f59e0b]",
     },
     {
       _id: "4",
       label: "TODOS",
-      total: totals["todo"],
+      total: data?.tasks["todo"],
       icon: <FaArrowsToDot />,
       bg: "bg-[#be185d]" || 0,
     },
@@ -211,6 +211,8 @@ const Dashboard = () => {
       </div>
     );
   };
+
+  console.log(data?.last10Task);
   return (
     <div className="h-full py-4">
       <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
