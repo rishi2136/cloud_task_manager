@@ -338,7 +338,7 @@ const AddTask = ({ open, setOpen, task }) => {
 
   // console.log(task.team);
 
-  const [team, setTeam] = useState(task?.team || []);
+  const [team, setTeam] = useState(task?.team?._id || []);
   const [stage, setStage] = useState(task?.stage?.toUpperCase() || LISTS[0]);
   const [priority, setPriority] = useState(
     task?.priority?.toUpperCase() || PRIORITY[2]
@@ -380,7 +380,7 @@ const AddTask = ({ open, setOpen, task }) => {
 
       setTimeout(() => {
         setOpen(false);
-        window.location.reload();
+        // window.location.reload();
       }, 500);
     } catch (err) {
       toast.error(err?.data?.message || "Something went wrong");
